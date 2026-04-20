@@ -45,6 +45,8 @@ Cette CNC est basée sur le projet **Raw Inventive** de [rawcnc.com](https://raw
 | Alimentation carte | ✅ Fait | Chargeur 19.2V/2A - LED stable |
 | Flashage firmware | ✅ Fait | V1.0.10 sur ESP32-S3 |
 | Configuration GRBL | ✅ Fait | Mode CNC (`$32=0`, `$45=2`, `$47=0`) |
+| Calibration steps/mm | ✅ Fait | `$100=71.11`, `$101=71.10`, `$102=400`, `$122=50` |
+| Connexion gSender | ✅ Fait | USB `/dev/tty.usbserial-130` OK, WiFi `MKS_DLC61693` |
 | gSender | ✅ Installé | v1.6.0 Apple Silicon natif |
 
 ### ⚠️ Prochaines étapes
@@ -75,17 +77,21 @@ Chargeur mural → DC jack 5.5x2.1mm → MKS DLC32 MAX (12-24V)
 **USB :** `/dev/tty.usbserial-XXXX` (115200 baud)  
 **WiFi :** Se connecter à `MKS_DLC32_XXXX` → `http://192.168.4.1`
 
-### Configuration GRBL Actuelle
+### Configuration GRBL Actuelle (Validée ✅)
 
 ```
 $32=0      → Mode CNC (pas laser)
 $45=2      → Mode XYZ (3 axes)
 $47=0      → Sans écran offline
-$100-102=80 → Steps/mm par défaut
+$100=71.11 → X steps/mm (HTD 3M, poulie 15 dents)
+$101=71.10 → Y steps/mm (idem)
+$102=400   → Z steps/mm (vis lead 8mm)
 $110-112=10000/10000/8000 → Vitesses max
-$120-122=500/500/500 → Accélérations
+$120-122=500/500/50 → Accélérations (Z réduit pour vis lead 8mm)
 $130-132=300/300/80 → Courses max
 ```
+
+> **💡 Sauvegarde :** Exporte ta config depuis gSender (Config → Export) pour backup JSON
 
 ---
 
@@ -105,6 +111,7 @@ Version : **gSender-1.6.0-Mac-Silicon.dmg** (Apple Silicon natif)
 - Jogging précis avec raccourcis
 - Gestion SD card (upload/run/delete)
 - Connexion USB ou WiFi
+- **Éditeur EEPROM intégré** (Config) pour modifier les réglages GRBL
 
 **Workflow :**
 1. Ouvrir fichier `.gcode` dans gSender → Visualiser 3D
@@ -112,6 +119,11 @@ Version : **gSender-1.6.0-Mac-Silicon.dmg** (Apple Silicon natif)
 3. Homing ($H)
 4. Jogger → Positionner outil → Zero X/Y/Z
 5. Lancer usinage
+
+**Connexion validée :**
+- **Port USB** : `/dev/tty.usbserial-130` (115200 baud)
+- **WiFi AP** : `MKS_DLC61693` (IP: 192.168.4.1)
+- **Firmware détecté** : grblHAL V1.0.10
 
 ---
 
@@ -363,8 +375,9 @@ Pour plus tard si besoin de fonctionnalités avancées :
 | **Broche** | Défonceuse 800W - **Manuel 220V** |
 | **Connexion** | `/dev/tty.usbserial-130` ou WiFi `MKS_DLC61693` |
 | **Sans écran TFT** | Contrôle via gSender sur Mac |
+| **Steps/mm** | X/Y: 71.11 | Z: 400 (lead 8mm) |
 
-**Statut** : 🟢 Carte configurée et prête  
+**Statut** : 🟢 **CARTE 100% CONFIGURÉE** - Firmware + Config + Interface opérationnels  
 **Prochaine étape** : 🔴 **Brancher interrupteurs fin de course** puis tester moteurs
 
 **Bonnes usinages !** 🎉🔧
