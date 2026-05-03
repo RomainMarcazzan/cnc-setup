@@ -27,7 +27,7 @@ Cette CNC est basée sur le projet **Raw Inventive** de [rawcnc.com](https://raw
 
 ### Électronique de puissance
 
-- **Moteurs** : NEMA 23 2.2N 82mm (x4) - 2x sur Y, 1x X, 1x Z
+- **Moteurs** : NEMA 23 57HS82 — 3.0A, 2.2 N·m, 82mm (x4) - 2x sur Y, 1x X, 1x Z
 - **Drivers** : TB6600
 - **Alimentation** : 350W 36V
 
@@ -74,7 +74,8 @@ Cette CNC est basée sur le projet **Raw Inventive** de [rawcnc.com](https://raw
 Chargeur mural → DC jack 5.5x2.1mm → MKS DLC32 MAX (12-24V)
 ```
 
-⚠️ **L'USB seul ne suffit pas !** La carte a besoin de 12-24V sur VIN.
+⚠️ **L'USB seul ne suffit pas !** La carte a besoin de 12-24V sur VIN (max 10A selon doc officielle).  
+⚠️ **L'USB ne fournit pas de 5V** — le 5V disponible sur la carte vient du régulateur interne (nécessite VIN branché).
 
 ### Connexion
 
@@ -240,23 +241,17 @@ Solution : Installer X-, Y-, Z- avant de lancer ce programme.
 
 ---
 
-## 🔌 Interrupteurs de Fin de Course
+## 🔌 Câblage Complet
 
-> **⚠️ SÉCURITÉ :** Sans fin de course, pas de homing possible. **OBLIGATOIRE** avant tests moteurs.
+> **📋 Schémas détaillés, longueurs de câble, connexions TB6600 et endstops → [CABLING.md](CABLING.md)**
 
-### Branchement MKS DLC32 MAX
+### Branchement fin de course (résumé)
 
 ```
-Micro-switch 3 broches :
-├── COM → GND (borne GND commune)
-└── NO  → Signal (X+, X-, Y+, Y-, Z+, Z-)
+MS5-R :
+├── COM → GND
+└── NO  → Signal (X-, Y-, Z- en priorité)
 ```
-
-**Ordre de priorité :**
-
-1. Z- (butée basse) - sécurité critique
-2. X-, Y- (homing)
-3. X+, Y+, Z+ (limites max)
 
 **Test après branchement :**
 
@@ -335,7 +330,7 @@ $25=500     # Homing seek
 - [ ] Interrupteurs fin de course branchés (X±, Y±, Z±)
 - [ ] Homing ($H) testé et fonctionnel
 - [ ] Câbles moteurs branchés (phasage correct)
-- [ ] Drivers TB6600 réglés (~2A)
+- [ ] Drivers TB6600 réglés (2.8A — SW3 ON + SW6 ON, reste OFF)
 - [ ] Alimentation 36V stable
 - [ ] Fraise bien serrée
 - [ ] Bouton d'arrêt d'urgence accessible

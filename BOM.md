@@ -21,7 +21,7 @@ Liste complète du matériel nécessaire pour la construction de la CNC bois 3 a
 | Fait  | Qté | Article                           | Prix payé           | N° Commande       | Notes                                                      |
 | ----- | --- | --------------------------------- | ------------------- | ----------------- | ---------------------------------------------------------- |
 | ✅ | 1x  | **MKS DLC32 MAX**                 | €19.37              | #3070968990253723 | ✅ Reçu                                                    |
-| ✅ | 4x  | NEMA 23 2.2N 82mm (arbre **8mm**) | inclus kit          | #3070968990313723 | ✅ Kit HLTNC 4 sets - Shaft 8mm confirmé                   |
+| ✅ | 4x  | NEMA 23 **57HS82** — 3.0A, 2.2 N·m, 82mm (arbre **8mm**) | inclus kit | #3070968990313723 | ✅ Kit HLTNC 4 sets - Shaft 8mm confirmé |
 | ✅ | 1x  | Alimentation 350W 36V             | inclus kit          | #3070968990313723 | ✅ Inclus dans kit HLTNC                                   |
 | ✅ | 4x  | Drivers TB6600                    | €190.48 (kit total) | #3070968990313723 | ✅ Kit HLTNC : 4x NEMA23 + 4x TB6600 + PSU 36V + carte USB |
 | ⬜ | 14x | Caps jumpers                      | -                   | ❌ Non commandé   | Probablement inclus avec TB6600 - vérifier                 |
@@ -92,7 +92,7 @@ Liste complète du matériel nécessaire pour la construction de la CNC bois 3 a
 
 | Fait  | Qté    | Article                           | Prix payé | N° Commande     | Notes                                   |
 | ----- | ------ | --------------------------------- | --------- | --------------- | --------------------------------------- |
-| ⬜ | 6x     | Micro-switchs 3 broches (endstop) | -         | ❌ Non commandé | **URGENT** — requis avant tests moteurs |
+| ✅ | 6x     | Micro-switchs 5A MS5-R (endstop)  | 23,40 €   | FC 27028 - Techtronik | ✅ Reçus                                |
 | ⬜ | 1x     | Câble 22-24AWG multi-conducteur   | -         | ❌ Non commandé |                                         |
 | ⬜ | Option | Connecteurs JST 2.54mm            | -         | ❌ Non commandé |                                         |
 
@@ -164,6 +164,8 @@ Liste complète du matériel nécessaire pour la construction de la CNC bois 3 a
 
 | Fait  | Qté    | Article                            | Prix payé | N° Commande     | Notes        |
 | ----- | ------ | ---------------------------------- | --------- | --------------- | ------------ |
+| ✅ | 8m     | Câble translucide 2x1,5mm² CCA    | 9,60 €    | FC 27028 - Techtronik | ✅ Câble puissance/moteurs              |
+| ✅ | 1x     | Câble 40 broches 30cm mâle (WPA414) | 6,90 €  | FC 27028 - Techtronik | ✅ Nappe MKS DLC32 MAX                 |
 | ⬜ | 10-14m | Câble CAT6 ou 4 conducteurs 20 AWG | -         | ❌ Non commandé | Pour moteurs |
 | ⬜ | 1x     | Câble USB-C vers USB-B             | -         | ❌ Non commandé | Pour Mac     |
 
@@ -220,6 +222,17 @@ Ces articles ont été commandés mais n'étaient pas dans le BOM initial.
 
 ---
 
+## 🏪 Achats locaux (Techtronik, La Réunion)
+
+| Facture   | Article                            | Qté | Prix TTC |
+| --------- | ---------------------------------- | --- | -------- |
+| FC 27028  | Câble 40 broches 30cm mâle (WPA414) | 1x | 6,90 €  |
+| FC 27028  | Câble translucide 2x1,5mm² CCA     | 8m | 9,60 €  |
+| FC 27028  | Micro-switch 5A (MS5-R)            | 6x | 23,40 € |
+|           | **TOTAL Techtronik**               |    | **39,90 €** |
+
+---
+
 ## 💰 Taxes et frais de douane
 
 | Colis                    | Montant         | Transporteur | Note                                      |
@@ -239,9 +252,10 @@ Ces articles ont été commandés mais n'étaient pas dans le BOM initial.
 | ----------------------------------------------- | ------------- |
 | Matériel AliExpress                             | €515.43       |
 | Taxes douane (5 colis : 4×Chronopost + 1×FedEx) | €120.64       |
-| **Total dépensé**                               | **€636.07**   |
-| Estimation achats restants                      | ~€103         |
-| **Budget total projet**                         | **~€739**     |
+| Achats locaux Techtronik (FC 27028)             | €39.90        |
+| **Total dépensé**                               | **€675.97**   |
+| Estimation achats restants                      | ~€93          |
+| **Budget total projet**                         | **~€769**     |
 
 ---
 
@@ -249,7 +263,7 @@ Ces articles ont été commandés mais n'étaient pas dans le BOM initial.
 
 | Priorité      | Article                                       | Estimation |
 | ------------- | --------------------------------------------- | ---------- |
-| 🔴 URGENT     | 6x Interrupteurs fin de course (endstop)      | ~€10 |
+| ✅ Fait       | 6x Interrupteurs fin de course (endstop)      | 23,40 € |
 | 🟡 Important  | Visserie M8 (boulons + écrous)                | ~€8  |
 | 🟢 Quand prêt | ~8m Cornière fer 20x20x3mm                    | ~€15 |
 | 🟢 Quand prêt | Bombe de peinture antirouille (cornières fer) | ~€5  |
@@ -269,34 +283,35 @@ Ce projet est réalisé à deux, frais partagés équitablement.
 | ----------------------------------------------- | ----------- |
 | Matériel AliExpress                             | €515.43     |
 | Taxes douane (5 colis : 4×Chronopost + 1×FedEx) | €120.64     |
-| **Total déjà dépensé**                          | **€636.07** |
+| Achats locaux Techtronik (FC 27028)             | €39.90      |
+| **Total déjà dépensé**                          | **€675.97** |
 
 ### Estimation des achats restants
 
 | Article                                  | Estimation |
 | ---------------------------------------- | ---------- |
-| 6x Interrupteurs fin de course (endstop) | ~€10       |
+| ~~6x Interrupteurs fin de course~~ ✅    | ~~€10~~    |
 | Visserie M8 (boulons + écrous)           | ~€8        |
 | ~8m Cornière fer 20x20x3mm               | ~€15       |
 | Bombe de peinture antirouille            | ~€5        |
 | 2x Panneaux MDF 12mm 1220x2440mm         | ~€40       |
 | Chaîne porte-câbles 15x30 (2m)           | ~€10       |
 | Câble moteur 10-14m                      | ~€15       |
-| **Total restant estimé**                 | **~€103**  |
+| **Total restant estimé**                 | **~€93**   |
 
 ### Budget total estimé
 
 | Catégorie               | Montant   |
 | ----------------------- | --------- |
-| Déjà dépensé            | €636.07   |
-| Achats restants estimés | ~€103     |
-| **Budget total projet** | **~€739** |
+| Déjà dépensé            | €675.97   |
+| Achats restants estimés | ~€93      |
+| **Budget total projet** | **~€769** |
 
 ### Part à rembourser à Romain
 
 | Qui      | Dépensé actuel | Part budget total                |
 | -------- | -------------- | -------------------------------- |
-| Romain   | €636.07 ✅     | ~€360 (50%)                      |
-| Philippe | **€318.03**    | + ~€52 à venir (achats restants) |
+| Romain   | €675.97 ✅     | ~€385 (50%)                      |
+| Philippe | **€337.99**    | + ~€47 à venir (achats restants) |
 
 > Les achats restants (~€103) seront partagés au fur et à mesure.
