@@ -145,6 +145,8 @@ La carte a **deux rangées de connecteurs moteurs** — ne pas confondre :
 | J27/J29/J28/J30/J16 | Haut de la carte | Drivers **intégrés** — **non utilisés** dans notre config             |
 | **E S D G** (×4)    | Milieu de carte  | Sorties drivers **externes** → **c'est ici qu'on branche les TB6600** |
 
+> **Connecteur A** : non utilisé dans cette config (X + dual-Y + Z). Réservé pour un éventuel 4ème axe rotatif.
+
 Chaque groupe **E S D G** correspond à un axe (X, Y, Z, A) :
 
 - **E** = Enable (ENA+)
