@@ -58,13 +58,27 @@ Le firmware MKS (LAS V1.0.10) est conçu pour les machines laser. Il ne supporte
 
 ## Steps/mm — calcul
 
-Configuration : **1/16 microstep + courroie GT2 + poulie 20 dents**
+⚠️ **Note importante** : `FIRMWARE.md` mentionnait initialement **GT2 × 20T** mais le matériel reçu est **HTD 3M × 15T**.
+
+Selon [BOM.md](BOM.md) :
+- ✅ Courroie reçue : **HTD 3M** (pas 3mm)
+- ✅ Poulies reçues : **15 dents HTD 3M**
+- ✅ Microstep TB6600 : **1/16**
+
+**Calcul réel :**
 
 ```
 200 pas/tour × 16 microsteps = 3200 pas/tour
-Poulie 20 dents × 2mm pas = 40 mm/tour
-→ 3200 ÷ 40 = 80 pas/mm
+Poulie 15 dents × 3mm pas = 45 mm/tour
+→ 3200 ÷ 45 = 71.11 pas/mm
 ```
+
+| Config | X/Y steps/mm | Z steps/mm (lead 8mm) |
+|--------|-------------|----------------------|
+| Valeur cible | **71.11** | **400** |
+| Valeur usine (actuelle) | 250.00 | 250.00 |
+
+→ Voir [EEPROM.md](EEPROM.md) pour l'état actuel de la carte.
 
 ---
 

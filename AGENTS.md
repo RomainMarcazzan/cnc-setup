@@ -21,9 +21,13 @@ Cette CNC est basée sur le projet **Raw Inventive** de [rawcnc.com](https://raw
 
 ### Contrôleur
 
-- **Carte** : Makerbase MKS DLC32 MAX
-- **Firmware** : MKS DLC32 MAX Firmware Officiel V1.0.10 (GRBL 1.1h)
-- **Connectivité** : USB + WiFi
+- **Carte** : Makerbase MKS DLC32 MAX 1.0
+- **Firmware** : **grblHAL v1.1f** (build 20260506) — compilé depuis [grblHAL Web Builder]()
+  - **Y-ganged activé** → Dual Y géré par firmware (connecteurs Y = Y1, A = Y2)
+  - Test confirmé : les deux moteurs Y bougent ensemble
+- **Détails firmware** → [FIRMWARE.md](FIRMWARE.md)
+- **Config EEPROM** → [EEPROM.md](EEPROM.md) (snapshot de la carte)
+- **Connectivité** : USB + WiFi + SD card
 
 ### Électronique de puissance
 
@@ -42,15 +46,22 @@ Cette CNC est basée sur le projet **Raw Inventive** de [rawcnc.com](https://raw
 
 ### ✅ Déjà fait
 
-| Étape                 | Statut      | Détail                                               |
-| --------------------- | ----------- | ---------------------------------------------------- |
-| Conception Fusion 360 | ✅ Fait     | 3 opérations, G-code généré                          |
-| Alimentation carte    | ✅ Fait     | Chargeur 19.2V/2A - LED stable                       |
-| Flashage firmware     | ✅ Fait     | V1.0.10 sur ESP32-S3                                 |
-| Configuration GRBL    | ✅ Fait     | Mode CNC (`$32=0`, `$45=2`, `$47=0`)                 |
-| Calibration steps/mm  | ✅ Fait     | `$100=71.11`, `$101=71.10`, `$102=400`, `$122=50`    |
-| Connexion gSender     | ✅ Fait     | USB `/dev/tty.usbserial-130` OK, WiFi `MKS_DLC61693` |
-| gSender               | ✅ Installé | v1.6.0 Apple Silicon natif                           |
+| Étape                 | Statut      | Détail                                                                 |
+| --------------------- | ----------- | ---------------------------------------------------------------------- |
+| Conception Fusion 360 | ✅ Fait     | 3 opérations, G-code généré                                            |
+| Alimentation carte    | ✅ Fait     | Chargeur 19.2V/2A - LED stable                                         |
+| Flashage firmware     | ✅ Fait     | grblHAL v1.1f (build 20260506) avec **Y-ganged** activé               |
+| Test Dual Y           | ✅ Fait     | Les deux moteurs Y bougent ensemble sur connecteurs Y et A             |
+| Connexion gSender     | ✅ Fait     | USB/WiFi OK                                                          |
+| gSender               | ✅ Installé | v1.6.0 Apple Silicon natif                                             |
+
+### ⚠️ Pas encore fait
+
+| Étape                 | Statut      | Détail                                                                 |
+| --------------------- | ----------- | ---------------------------------------------------------------------- |
+| Calibration steps/mm  | ⚠️ À faire | Actuellement `$100-$102=250` (valeurs usine) → voir [EEPROM.md](EEPROM.md) |
+| Interrupteurs fin de course | ⚠️ À faire | Brancher X-, Y-, Z- avant tests moteurs |
+| Homing                | ⚠️ À faire | `$22=0` actuellement (désactivé) |
 
 ### ⚠️ Prochaines étapes
 
@@ -82,18 +93,20 @@ Chargeur mural → DC jack 5.5x2.1mm → MKS DLC32 MAX (12-24V)
 **USB :** `/dev/tty.usbserial-XXXX` (115200 baud)  
 **WiFi :** Se connecter à `MKS_DLC32_XXXX` → `http://192.168.4.1`
 
-### Configuration GRBL Actuelle (Validée ✅)
+### Configuration GRBL à configurer (valeurs cible)
+
+⚠️ **Actuellement, l'EEPROM est aux valeurs usine** → voir [EEPROM.md](EEPROM.md) pour l'état réel.
+
+À configurer après test mécanique :
 
 ```
-$32=0      → Mode CNC (pas laser)
-$45=2      → Mode XYZ (3 axes)
-$47=0      → Sans écran offline
-$100=71.11 → X steps/mm (HTD 3M, poulie 15 dents)
-$101=71.10 → Y steps/mm (idem)
-$102=400   → Z steps/mm (vis lead 8mm)
-$110-112=10000/10000/8000 → Vitesses max
-$120-122=500/500/50 → Accélérations (Z réduit pour vis lead 8mm)
-$130-132=300/300/80 → Courses max
+$100=71.11  → X steps/mm (HTD 3M, poulie 15 dents, 1/16 microstep)
+$101=71.10  → Y steps/mm (idem)
+$102=400    → Z steps/mm (vis T8, lead 8mm/multifilets, 1/16 microstep)
+$44=4       → Homing cycle 1 (Z d'abord)
+$45=3       → Homing cycle 2 (X+Y ensemble)
+$46=0       → Homing cycle 3 (aucun)
+$32=0       → Mode CNC (pas laser)
 ```
 
 > **💡 Sauvegarde :** Exporte ta config depuis gSender (Config → Export) pour backup JSON
@@ -366,7 +379,7 @@ Pour plus tard si besoin de fonctionnalités avancées :
 - ⚠️ Nécessite compilation branche S3 (ESP32-S3)
 - ⚠️ Écran TFT MKS peut ne pas être supporté
 
-> Commencer avec firmware MKS officiel, migrer vers FluidNC une fois la CNC maîtrisée.
+> Déjà sur **grblHAL** qui est le bon compromis entre le firmware MKS (limité) et FluidNC (plus complexe). Migrer seulement si besoin de fonctionnalités spécifiques.
 
 ---
 
@@ -386,16 +399,18 @@ Pour plus tard si besoin de fonctionnalités avancées :
 | ------------------------ | ----------------------------------------------- | ----------------- |
 | **Projet**               | Raw Inventive CNC 3 axes                        |
 | **Électronique**         | MKS DLC32 MAX + TB6600 + NEMA 23                |
-| **Firmware**             | MKS V1.0.10 (GRBL 1.1h)                         |
+| **Firmware**             | **grblHAL v1.1f** (build 20260506)                         |
 | **Alimentation carte**   | Chargeur 19.2V/2A ✅                            |
 | **Alimentation moteurs** | 36V 350W ⚠️ à installer                         |
 | **Contrôle**             | **gSender 1.6.0** (USB/WiFi)                    |
 | **Broche**               | Défonceuse 800W - **Manuel 220V**               |
 | **Connexion**            | `/dev/tty.usbserial-130` ou WiFi `MKS_DLC61693` |
 | **Sans écran TFT**       | Contrôle via gSender sur Mac                    |
-| **Steps/mm**             | X/Y: 71.11                                      | Z: 400 (lead 8mm) |
+| **Dual Y**               | **Firmware Y-ganged** → Connecteur Y=Y1, A=Y2 (synchro auto) |
+| **Steps/mm**             | X/Y: 71.11 (cible)                                      | Z: 400 (cible, lead 8mm) |
 
-**Statut** : 🟢 **CARTE 100% CONFIGURÉE** - Firmware + Config + Interface opérationnels  
+**Statut** : 🟢 **FIRMWARE OK + Dual Y confirmé  
+⚠️ **Steps/mm NON CONFIGURÉS (valeurs usine : 250)  
 **Prochaine étape** : 🔴 **Brancher interrupteurs fin de course** puis tester moteurs
 
 **Bonnes usinages !** 🎉🔧

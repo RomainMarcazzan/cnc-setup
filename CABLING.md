@@ -145,7 +145,17 @@ La carte a **deux rangées de connecteurs moteurs** — ne pas confondre :
 | J27/J29/J28/J30/J16 | Haut de la carte | Drivers **intégrés** — **non utilisés** dans notre config             |
 | **E S D G** (×4)    | Milieu de carte  | Sorties drivers **externes** → **c'est ici qu'on branche les TB6600** |
 
-> **Connecteur A** : non utilisé dans cette config (X + dual-Y + Z). Réservé pour un éventuel 4ème axe rotatif.
+> **Connecteur A** : utilisé comme **Y2** (deuxième moteur Y) via firmware Y-ganged dans grblHAL.
+
+**Important :** Avec le **firmware Y-ganged (notre config) :
+- Connecteur **Y** = Y1 (moteur Y gauche/arrière-gauche)
+- Connecteur **A** = Y2 (moteur Y droit/arrière-droite)
+- Les deux bougent **automatiquement ensemble** sur commande `G0 Yxx
+
+Sans Y-ganged (ancienne méthode) :
+- Câblage parallèle sur le même connecteur Y → moins propre
+
+→ Voir [FIRMWARE.md](FIRMWARE.md) pour plus de détails.
 
 Chaque groupe **E S D G** correspond à un axe (X, Y, Z, A) :
 
@@ -156,17 +166,24 @@ Chaque groupe **E S D G** correspond à un axe (X, Y, Z, A) :
 
 ### Tableau de connexions MKS DLC32 MAX → TB6600
 
+⚠️ **Notre config : firmware grblHAL Y-ganged**
+- Connecteur **Y** = Y1
+- Connecteur **A** = Y2
+- Les deux moteurs bougent automatiquement ensemble
+
 | MKS (broche E S D G) | Fil | TB6600 X         | TB6600 Y1        | TB6600 Y2        | TB6600 Z         |
 | -------------------- | --- | ---------------- | ---------------- | ---------------- | ---------------- |
 | X → S (Step)         | →   | PUL+             |                  |                  |                  |
 | X → D (Dir)          | →   | DIR+             |                  |                  |                  |
-| Y → S (Step)         | →   |                  | PUL+             | PUL+             |                  |
-| Y → D (Dir)          | →   |                  | DIR+             | DIR+             |                  |
+| **Y** → S (Step)     | →   |                  | PUL+             |                  |                  |
+| **Y** → D (Dir)      | →   |                  | DIR+             |                  |                  |
+| **A** → S (Step)     | →   |                  |                  | PUL+             |                  |
+| **A** → D (Dir)      | →   |                  |                  | DIR+             |                  |
 | Z → S (Step)         | →   |                  |                  |                  | PUL+             |
 | Z → D (Dir)          | →   |                  |                  |                  | DIR+             |
 | G (GND)              | →   | PUL-, DIR-, ENA- | PUL-, DIR-, ENA- | PUL-, DIR-, ENA- | PUL-, DIR-, ENA- |
 
-> **Y1 et Y2 partagent les mêmes signaux Step/Dir** — branchés en parallèle depuis les mêmes broches MKS. Si un moteur tourne à l'envers : inverser A+ ↔ A- sur ce TB6600 uniquement (ne pas changer `$3`).
+> **Sens des moteurs Y** : Si un moteur Y tourne à l'envers (par rapport à l'autre), utiliser `$3` pour inversion ou inverser les fils A+/A- sur ce moteur uniquement. Voir [FIRMWARE.md](FIRMWARE.md) pour plus de détails.
 
 ---
 
