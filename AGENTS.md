@@ -44,34 +44,89 @@ Cette CNC est basée sur le projet **Raw Inventive** de [rawcnc.com](https://raw
 
 ## 🔥 État Actuel & Prochaines Étapes
 
-### ✅ Déjà fait
+### ✅ Déjà fait (2026-05-11)
 
-| Étape                 | Statut      | Détail                                                                 |
-| --------------------- | ----------- | ---------------------------------------------------------------------- |
-| Conception Fusion 360 | ✅ Fait     | 3 opérations, G-code généré                                            |
-| Alimentation carte    | ✅ Fait     | Chargeur 19.2V/2A - LED stable                                         |
-| Flashage firmware     | ✅ Fait     | grblHAL v1.1f (build 20260506) avec **Y-ganged** activé               |
-| Test Dual Y           | ✅ Fait     | Les deux moteurs Y bougent ensemble sur connecteurs Y et A             |
-| Connexion gSender     | ✅ Fait     | USB/WiFi OK                                                          |
-| gSender               | ✅ Installé | v1.6.0 Apple Silicon natif                                             |
+| Étape                      | Statut      | Détail                                                                 |
+| -------------------------- | ----------- | ---------------------------------------------------------------------- |
+| Conception Fusion 360      | ✅ Fait     | 3 opérations, G-code généré                                            |
+| Alimentation carte         | ✅ Fait     | Chargeur 19.2V/2A - LED stable                                         |
+| Flashage firmware          | ✅ Fait     | grblHAL v1.1f (build 20260506) avec **Y-ganged** activé               |
+| Config GRBL EEPROM         | ✅ Fait     | `$100=71.11`, `$101=71.11`, `$102=400` (théorique) → voir [EEPROM.md](EEPROM.md) |
+| TB6600 réglés              | ✅ Fait     | 1/16 microstep, 2.8A courant                                           |
+| Test Dual Y                | ✅ Fait     | Les deux moteurs Y bougent ensemble (Y=Y1, A=Y2)                      |
+| Connexion gSender          | ✅ Fait     | USB/WiFi OK                                                          |
+| gSender                    | ✅ Installé | v1.6.0 Apple Silicon natif                                             |
 
-### ⚠️ Pas encore fait
+---
 
-| Étape                 | Statut      | Détail                                                                 |
-| --------------------- | ----------- | ---------------------------------------------------------------------- |
-| Calibration steps/mm  | ⚠️ À faire | Actuellement `$100-$102=250` (valeurs usine) → voir [EEPROM.md](EEPROM.md) |
-| Interrupteurs fin de course | ⚠️ À faire | Brancher X-, Y-, Z- avant tests moteurs |
-| Homing                | ⚠️ À faire | `$22=0` actuellement (désactivé) |
+## 📋 Checklist Projet
 
-### ⚠️ Prochaines étapes
+Par ordre de réalisation (on peut faire des tests moteurs SANS endstops) :
 
-| Étape                       | Priorité               | Détail                                  |
-| --------------------------- | ---------------------- | --------------------------------------- |
-| Interrupteurs fin de course | 🔴 **URGENT**          | Brancher X±, Y±, Z± avant tests moteurs |
-| Test mécanique              | 🟡 Important           | Brancher moteurs, tester jog/homing     |
-| Calibration steps/mm        | 🟡 Important           | Ajuster `$100-$102` selon mécanique     |
-| Montage mécanique           | 🟢 Quand matériel reçu | Assembler structure Raw Inventive       |
-| Test usinage                | 🟢 Final               | Premier test avec G-code généré         |
+### 🔹 Phase 1 — Tests électriques (maintenant possible)
+
+**Peut être fait avant montage mécanique complet**
+
+| Fait | Étape | Détail |
+|------|-------|--------|
+| ⬜ | Tester moteur X | Jog `+10mm`, vérifier qu'il tourne dans le bon sens |
+| ⬜ | Tester moteur Y1 | Jog Y, vérifier que Y1 tourne |
+| ⬜ | Tester moteur Y2 | Jog Y, vérifier que Y2 tourne **en même temps** (Y-ganged) |
+| ⬜ | Tester sens des deux Y | Ils doivent tourner dans des sens **opposés** (normal pour portique) |
+| ⬜ | Tester moteur Z | Jog `+5mm`, vérifier sens et bruit |
+| ⬜ | Vérifier température TB6600 | Après 1-2 minutes de test, ils doivent être tièdes, pas brûlants |
+
+> **Note sur les endstops :** On peut faire TOUTE cette phase SANS endstops. Ils ne sont utiles que pour le homing (`$H`) et les soft limits.
+
+---
+
+### 🔹 Phase 2 — Montage mécanique
+
+| Fait | Étape | Détail |
+|------|-------|--------|
+| ⬜ | Structure fer | Assembler les cornières 20x20 selon Raw Inventive |
+| ⬜ | Fixer plaques MDF | Percer et fixer les plaques |
+| ⬜ | Monter rails/roulements | V-groove et 608ZZ |
+| ⬜ | Monter moteurs X/Y/Z | Fixer les NEMA 23 avec les espacements |
+| ⬜ | Tendre courroies X/Y | HTD 3M - ni trop lâche, ni trop tendue |
+| ⬜ | Monter vis Z | T8 lead 8mm + KFL08 + écrou anti-backlash |
+
+---
+
+### 🔹 Phase 3 — Calibration mécanique (mesure réelle)
+
+| Fait | Étape | Détail |
+|------|-------|--------|
+| ⬜ | Calibrer X | Jog X+100mm, mesurer, ajuster `$100` |
+| ⬜ | Calibrer Y | Jog Y+100mm, mesurer, ajuster `$101` |
+| ⬜ | Calibrer Z | Jog Z+20mm, mesurer, ajuster `$102` |
+| ⬜ | Ajuster vitesses | Augmenter `$110-$112` progressivement |
+| ⬜ | Ajuster accélérations | Augmenter `$120-$122` si les moteurs ne perdent pas de pas |
+
+---
+
+### 🔹 Phase 4 — Endstops & Homing (avant usinage)
+
+| Fait | Étape | Détail |
+|------|-------|--------|
+| ⬜ | Brancher Z- | Connecter sur `Z-` (droite carte) |
+| ⬜ | Brancher X- | Connecter sur `X-` |
+| ⬜ | Brancher Y- | Connecter sur `Y-` |
+| ⬜ | Tester avec `?` | Vérifier que `Pn:` apparaît quand on appuie sur un switch |
+| ⬜ | Activer homing | `$22=1` |
+| ⬜ | Config direction | `$23` si besoin |
+| ⬜ | Tester `$H` | Home Z d'abord, puis X+Y |
+
+---
+
+### 🔹 Phase 5 — Premier usinage
+
+| Fait | Étape | Détail |
+|------|-------|--------|
+| ⬜ | Air cut | Lancer programme SANS pièce, SANS broche — vérifier le parcours |
+| ⬜ | Test stylo | Fixer un stylo au lieu de la fraise, tracer sur papier |
+| ⬜ | Chute de bois | Première vraie passe, profondeur réduite (1-2mm) |
+| ⬜ | Pièce finale | Uniquement après tous les tests validés |
 
 ---
 
@@ -93,21 +148,21 @@ Chargeur mural → DC jack 5.5x2.1mm → MKS DLC32 MAX (12-24V)
 **USB :** `/dev/tty.usbserial-XXXX` (115200 baud)  
 **WiFi :** Se connecter à `MKS_DLC32_XXXX` → `http://192.168.4.1`
 
-### Configuration GRBL à configurer (valeurs cible)
+### Configuration GRBL actuelle
 
-⚠️ **Actuellement, l'EEPROM est aux valeurs usine** → voir [EEPROM.md](EEPROM.md) pour l'état réel.
-
-À configurer après test mécanique :
+✅ **Config théorique appliquée** → voir [EEPROM.md](EEPROM.md) pour l'état réel.
 
 ```
 $100=71.11  → X steps/mm (HTD 3M, poulie 15 dents, 1/16 microstep)
-$101=71.10  → Y steps/mm (idem)
+$101=71.11  → Y steps/mm (idem)
 $102=400    → Z steps/mm (vis T8, lead 8mm/multifilets, 1/16 microstep)
 $44=4       → Homing cycle 1 (Z d'abord)
 $45=3       → Homing cycle 2 (X+Y ensemble)
 $46=0       → Homing cycle 3 (aucun)
 $32=0       → Mode CNC (pas laser)
 ```
+
+⚠️ **Important :** Ce sont des valeurs **calculées théoriquement**. Tu devras **recalibrer** après montage mécanique avec une mesure réelle (ex: jog `X+100mm`, mesurer, ajuster `$100`).
 
 > **💡 Sauvegarde :** Exporte ta config depuis gSender (Config → Export) pour backup JSON
 
@@ -407,10 +462,10 @@ Pour plus tard si besoin de fonctionnalités avancées :
 | **Connexion**            | `/dev/tty.usbserial-130` ou WiFi `MKS_DLC61693` |
 | **Sans écran TFT**       | Contrôle via gSender sur Mac                    |
 | **Dual Y**               | **Firmware Y-ganged** → Connecteur Y=Y1, A=Y2 (synchro auto) |
-| **Steps/mm**             | X/Y: 71.11 (cible)                                      | Z: 400 (cible, lead 8mm) |
+| **Steps/mm**             | X/Y: 71.11 (configurée théorique)                                      | Z: 400 (configurée) |
 
-**Statut** : 🟢 **FIRMWARE OK + Dual Y confirmé  
-⚠️ **Steps/mm NON CONFIGURÉS (valeurs usine : 250)  
-**Prochaine étape** : 🔴 **Brancher interrupteurs fin de course** puis tester moteurs
+**Statut** : 🟢 **FIRMWARE OK + Dual Y confirmé + EEPROM configurée (théorique)  
+⚠️ **À calibrer plus tard :** calibration réelle après montage mécanique  
+**Prochaine étape** : 🟡 **Tester moteurs** (jog individuel, sens, température) → voir checklist complète dans la section "🔥 État Actuel & Prochaines Étapes"
 
 **Bonnes usinages !** 🎉🔧
