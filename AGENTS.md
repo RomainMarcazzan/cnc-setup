@@ -56,6 +56,7 @@ Cette CNC est basée sur le projet **Raw Inventive** de [rawcnc.com](https://raw
 | Test Dual Y                | ✅ Fait     | Les deux moteurs Y bougent ensemble (Y=Y1, A=Y2)                      |
 | Connexion gSender          | ✅ Fait     | USB/WiFi OK                                                          |
 | gSender                    | ✅ Installé | v1.6.0 Apple Silicon natif                                             |
+| **Phase 1 Tests électriques** | ✅ **Fait** | Tous les moteurs testés : X, Y1, Y2, Z — sens OK, température OK     |
 
 ---
 
@@ -63,18 +64,18 @@ Cette CNC est basée sur le projet **Raw Inventive** de [rawcnc.com](https://raw
 
 Par ordre de réalisation (on peut faire des tests moteurs SANS endstops) :
 
-### 🔹 Phase 1 — Tests électriques (maintenant possible)
+### 🔹 Phase 1 — Tests électriques ✅ COMPLÉTÉ (2026-05-11)
 
 **Peut être fait avant montage mécanique complet**
 
 | Fait | Étape | Détail |
 |------|-------|--------|
-| ⬜ | Tester moteur X | Jog `+10mm`, vérifier qu'il tourne dans le bon sens |
-| ⬜ | Tester moteur Y1 | Jog Y, vérifier que Y1 tourne |
-| ⬜ | Tester moteur Y2 | Jog Y, vérifier que Y2 tourne **en même temps** (Y-ganged) |
-| ⬜ | Tester sens des deux Y | Ils doivent tourner dans des sens **opposés** (normal pour portique) |
-| ⬜ | Tester moteur Z | Jog `+5mm`, vérifier sens et bruit |
-| ⬜ | Vérifier température TB6600 | Après 1-2 minutes de test, ils doivent être tièdes, pas brûlants |
+| ✅ | Tester moteur X | Jog `+10mm`, tourne dans le bon sens, position affichée correctement |
+| ✅ | Tester moteur Y1 | Jog Y, Y1 tourne (sens antihoraire sur Y+) |
+| ✅ | Tester moteur Y2 | Jog Y, Y2 tourne **en même temps** (Y-ganged confirmé) |
+| ✅ | Tester sens des deux Y | Y1 antihoraire, Y2 horaire (sens opposés = normal pour portique) |
+| ✅ | Tester moteur Z | Jog `+10mm`, tourne plus vite que X/Y (normal, lead 8mm vs 45mm) |
+| ✅ | Vérifier température TB6600 | Tièdes, ventilateurs thermorégulés fonctionnent (s'allument/coupent) |
 
 > **Note sur les endstops :** On peut faire TOUTE cette phase SANS endstops. Ils ne sont utiles que pour le homing (`$H`) et les soft limits.
 
@@ -464,8 +465,8 @@ Pour plus tard si besoin de fonctionnalités avancées :
 | **Dual Y**               | **Firmware Y-ganged** → Connecteur Y=Y1, A=Y2 (synchro auto) |
 | **Steps/mm**             | X/Y: 71.11 (configurée théorique)                                      | Z: 400 (configurée) |
 
-**Statut** : 🟢 **FIRMWARE OK + Dual Y confirmé + EEPROM configurée (théorique)  
+**Statut** : 🟢 **FIRMWARE OK + Dual Y confirmé + EEPROM configurée (théorique) + Tests électriques OK  
 ⚠️ **À calibrer plus tard :** calibration réelle après montage mécanique  
-**Prochaine étape** : 🟡 **Tester moteurs** (jog individuel, sens, température) → voir checklist complète dans la section "🔥 État Actuel & Prochaines Étapes"
+**Prochaine étape** : 🟡 **Montage mécanique** (structure fer, plaques MDF, rails)
 
 **Bonnes usinages !** 🎉🔧
