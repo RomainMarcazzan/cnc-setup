@@ -255,6 +255,21 @@ Manufacture → Post Process
 | **Course Z**    | 0-27 mm       | $132 = 80 mm     | ✅ OK  |
 | **Vitesse X/Y** | F1800 mm/min  | $110-$111 = 3000 | ✅ OK  |
 
+### 🛡️ Version sécurisée pour tests sans endstops
+
+Pour tester le parcours complet avec les moteurs à vide (sans mécanique montée) :
+- **Fichier original** : [`clamp_wood_v4.nc`](clamp_wood_v4.nc) → Contient `G28` (nécessite endstops)
+- **Version sécurisée** : [`clamp_wood_v4_safe.nc`](clamp_wood_v4_safe.nc) → `G28` et `M0` commentés, permet test immédiat
+
+**Comment tester :**
+1. Charger `clamp_wood_v4_safe.nc` dans gSender
+2. Visualiser le parcours 3D
+3. Cliquer **Start** → Les 4 moteurs tourneront dans le vide (~10-15 min)
+4. Observer : X/Y font le contour, Z descend en spirale
+5. À la fin, les moteurs s'arrêtent sans erreur (pas de `G28` bloquant)
+
+> **⚠️ Moteurs sans charge** : Ils tourneront plus facilement qu'avec la mécanique. Si un moteur perd des pas "à vide", c'est mauvais signe pour la charge réelle.
+
 ### ⚠️ Points d'attention
 
 **1. Vitesses Z (avec vis lead 8mm)**
