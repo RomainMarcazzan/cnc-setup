@@ -4,7 +4,7 @@ Snapshot des paramètres EEPROM de la carte MKS DLC32 MAX.
 
 ---
 
-## 🔍 État actuel — 2026-05-11
+## 🔍 État actuel — 2026-05-11 (v2 : configuration appliquée)
 
 **Lecture directe depuis la carte via `/dev/ttyUSB0`**
 
@@ -17,7 +17,6 @@ Snapshot des paramètres EEPROM de la carte MKS DLC32 MAX.
 [FIRMWARE:grblHAL]
 [BOARD:MKS DLC32 MAX 1.0]
 [DRIVER:ESP32-S3@240MHz]
-[WIFI STA MAC:98:88:e0:17:fd:f0]
 ```
 
 ### Paramètres EEPROM ($$)
@@ -50,21 +49,21 @@ Snapshot des paramètres EEPROM de la carte MKS DLC32 MAX.
 | $44 | 4 | Homing cycle 1 (4 = Z) |
 | $45 | 3 | Homing cycle 2 (3 = X+Y) |
 | $46 | 0 | Homing cycle 3 (0 = none) |
+| **Steps/mm** | | |
+| $100 | **71.11** | X steps/mm (HTD 3M × 15T × 1/16) |
+| $101 | **71.11** | Y steps/mm (idem) |
+| $102 | **400.0** | Z steps/mm (T8 lead 8mm × 1/16) |
 | **Vitesse/Accélération** | | |
-| $110 | 500.000 | X max rate (mm/min) |
-| $111 | 500.000 | Y max rate (mm/min) |
-| $112 | 500.000 | Z max rate (mm/min) |
-| $120 | 10.000 | X acceleration (mm/sec²) |
-| $121 | 10.000 | Y acceleration (mm/sec²) |
-| $122 | 10.000 | Z acceleration (mm/sec²) |
-| **Steps/mm (⚠️ À CALIBRER)** | | |
-| $100 | 250.00000 | X steps/mm (usine) |
-| $101 | 250.00000 | Y steps/mm (usine) |
-| $102 | 250.00000 | Z steps/mm (usine) |
+| $110 | **3000.0** | X max rate (mm/min) |
+| $111 | **3000.0** | Y max rate (mm/min) |
+| $112 | **1000.0** | Z max rate (mm/min) |
+| $120 | **100.0** | X acceleration (mm/sec²) |
+| $121 | **100.0** | Y acceleration (mm/sec²) |
+| $122 | **50.0** | Z acceleration (mm/sec²) |
 | **Courses max** | | |
-| $130 | 200.000 | X max travel (mm) |
-| $131 | 200.000 | Y max travel (mm) |
-| $132 | 200.000 | Z max travel (mm) |
+| $130 | **1200.0** | X max travel (mm) |
+| $131 | **1200.0** | Y max travel (mm) |
+| $132 | **80.0** | Z max travel (mm) |
 | **Broche/Laser** | | |
 | $32 | 0 | Laser mode disable (mode CNC) |
 | $30 | 1000.000 | Max spindle speed (RPM) |
@@ -77,7 +76,16 @@ Snapshot des paramètres EEPROM de la carte MKS DLC32 MAX.
 
 ---
 
-## ⚠️ Notes importantes
+## 📋 Historique des snapshots
+
+| Date | État | Fichier |
+|------|------|---------|
+| 2026-05-11 (v2) | **Config appliquée** : steps/mm, vitesses, accélérations, courses | Ce commit |
+| 2026-05-11 (v1) | Valeurs usine (`$100-$102=250`) | Commit précédent `3cbc979` |
+
+---
+
+## ℹ️ Notes importantes
 
 ### Firmware
 - **Compilé avec grblHAL Web Builder** le **2026-05-06**
@@ -85,22 +93,23 @@ Snapshot des paramètres EEPROM de la carte MKS DLC32 MAX.
 - **Y-ganged activé** → Connecteur **Y = Y1**, Connecteur **A = Y2** (synchro auto par firmware)
 - **Test confirmé** : Les deux moteurs Y bougent ensemble sur commande Y
 
-### Valeurs USINE (à modifier)
-Les `$100-$102` et `$110-$132` sont aux **valeurs par défaut** du Web Builder. Elles correspondent à rien dans notre config mécanique.
-
-### Configuration cible (selon BOM)
-À configurer plus tard (après test mécanique) :
-
+### Config théorique vs calibration réelle
+Ces valeurs sont des **calculs théoriques** :
 ```
-$100=71.11   ; X (HTD 3M × 15T × 1/16)
-$101=71.11   ; Y (idem)
-$102=400     ; Z (T8 lead 8mm × 1/16)
+X/Y: (200 pas/tour × 16 microstep) ÷ (15 dents × 3mm) = 71.11 steps/mm
+Z:   (200 pas/tour × 16 microstep) ÷ 8mm = 400 steps/mm
 ```
+
+⚠️ **À calibrer plus tard** :
+1. Jog `X+100mm`, mesurer avec une règle ce que la machine fait réellement
+2. Ajuster : `$100 = $100 × (distance mesurée ÷ 100)`
+3. Recommencer pour Y et Z
 
 ---
 
-## 📋 Historique
+## ⚠️ Points à faire
 
-| Date | Action | Fichier |
-|------|--------|---------|
-| 2026-05-11 | Première lecture EEPROM depuis Linux | Ce fichier |
+- [ ] Brancher endstops (X-, Y-, Z-)
+- [ ] Activer homing (`$22=1`)
+- [ ] Tester moteurs
+- [ ] Calibrer steps/mm (mesure réelle)
